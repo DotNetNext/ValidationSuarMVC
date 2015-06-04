@@ -70,12 +70,15 @@
     <Compile Include="ValidationSugar.cs" />
     <Compile Include="WebForm\demo1\V1.aspx.cs">
       <DependentUpon>V1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForm\demo2\PostV2.aspx.cs">
       <DependentUpon>PostV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForm\demo2\v2.aspx.cs">
       <DependentUpon>v2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
