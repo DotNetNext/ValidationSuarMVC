@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SyntacticSugar;
+using ValidationSuarMVC.Models;
 
 namespace ValidationSuarMVC
 {
@@ -32,9 +34,10 @@ namespace ValidationSuarMVC
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
+            Validates.Init();
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
         }
     }
 }

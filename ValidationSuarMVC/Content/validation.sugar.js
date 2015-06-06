@@ -21,28 +21,42 @@ var validateFactory = function (form) {
         }
     }
     function addMethod() {
-        form.find("[pattern]").each(function () {
+        form.find("[validatesize]").each(function () {
             var th = $(this);
-            var pattern = GetPattern(th);
-            var methodName = GetMdthodName(th);
-            $.validator.addMethod(methodName, function (value, element, params) {
-                return this.optional(element) || new RegExp(pattern).test(value);
-            }, GetTip(th));
+            var count = GetValidatesize(th);
+            for (var i = 0; i < count; i++) {
+                var methodName = GetMdthodName(th, i);
+                $.validator.addMethod(methodName, function (value, element, params) {
+                    if (i == count) {
+                        i = 0;
+                    }
+                    var pattern = GetPattern(th, i);
+                    ++i;
+                    return this.optional(element) || new RegExp(pattern).test(value);
+                }, GetTip(th, i));
+            }
         });
     }
     function bind() {
         var rules = {};
         var messages = {};
-        form.find("[pattern]").each(function () {
+        form.find("[validatesize]").each(function () {
             var th = $(this);
-            var methodName = GetMdthodName(th);
+            var count = GetValidatesize(th);
             var name = GetName(th);
             rules[name] = {};
-            rules[name][methodName] = true;
+            for (var i = 0; i < count; i++) {
+                var methodName = GetMdthodName(th, i);
+                rules[name][methodName] = true;
+            }
             if (GetIsRequired(th)) {
                 rules[name].required = true;
 
                 messages[name] = {};
+                //                for (var i = 0; i < count; i++) {
+                //                    var methodName = GetMdthodName(th, i);
+                //                    messages[name][methodName] = GetTip(th,i);
+                //                }
                 messages[name].required = "不能为空！";
             }
 
@@ -70,17 +84,17 @@ var validateFactory = function (form) {
     }
 
 
-    function GetMdthodName(ele) {
-        return ele.attr("name") + "ValidateMethod";
+    function GetMdthodName(ele, i) {
+        return ele.attr("name") + "ValidateMethod" + i;
     }
     function GetName(ele) {
         return ele.attr("name");
     }
-    function GetPattern(ele) {
-        return ele.attr("pattern");
+    function GetPattern(ele, i) {
+        return ele.attr("pattern" + i);
     }
-    function GetTip(ele) {
-        return ele.next().text();
+    function GetTip(ele, i) {
+        return ele.attr("tip" + i);
     }
     function GetIsRequired(ele) {
         if (ele.attr("required")) {
@@ -88,6 +102,9 @@ var validateFactory = function (form) {
         } else {
             return false;
         }
+    }
+    function GetValidatesize(ele) {
+        return parseInt(ele.attr("validatesize"));
     }
 };
 

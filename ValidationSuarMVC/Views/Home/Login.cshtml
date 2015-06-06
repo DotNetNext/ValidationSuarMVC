@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout =null;
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="/Content/jquery-validation-1.13.1/lib/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="/Content/jquery-validation-1.13.1/dist/jquery.validate.js" type="text/javascript"></script>
+    <script src="/Content/validation.sugar.js" type="text/javascript"></script>
+    <script src="/Content/jquery-validation-1.13.1/lib/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var factory = new validateFactory($("form"));
+            factory.init();
+
+            $("#btnSubmit").click(function () {
+                //异步方式
+                factory.ajaxSubmit(function () {
+                    $("form").ajaxSubmit({
+                        type: "post",
+                        url: "/home/postlogin",
+                        dataType: "json",
+                        success: function (msg) {
+                            alert(msg.Message)
+                        }
+                    })
+                });
+            });
+
+        });
+    </script>
+    <style>
+        .form_hint
+        {
+            display: none;
+        }
+        #form1 .error
+        {
+            color: Red;
+        }
+    </style>
+</head>
+<body>
+    <h3>
+        基于jquery.validate的前后台双验证</h3>
+    <form method="post"  id="form1">
+    <p>
+        name:
+        <input type="text" name="userName">
+    </p>
+    <p>
+        password:
+        <input type="password" name="password" />
+    </p>
+
+    <button id="btnSubmit" type="button">
+        提交</button>
+     @Html.Raw(ViewBag.validationBind)
+    </form>
+</body>
+</html>
+
