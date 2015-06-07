@@ -16,6 +16,7 @@ namespace ValidationSuarMVC.Controllers
             return View();
         }
 
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -23,7 +24,7 @@ namespace ValidationSuarMVC.Controllers
             ViewBag.validationBind = ValidationSugar.GetBindScript(PageKeys.LOGIN_KEY);
 
 
-            //如果是负载均衡引起静态变量丢失可以写成这样,Global就无需注册
+            //如果是负载均衡引起静态变量丢失可以写成这样,Global就无需注册。(PostValidation也一样)
             // ViewBag.validationBind = ValidationSugar.GetBindScript(PageKeys.INDEX_KEY, () => { Validates.Init()});
             return View();
         }
@@ -61,7 +62,7 @@ namespace ValidationSuarMVC.Controllers
             //请在 Global  applicationStart添加  Validates.Init()
             ViewBag.validationBind = ValidationSugar.GetBindScript(PageKeys.REGISTER_KEY);
 
-            //如果是负载均衡引起静态变量丢失可以写成这样,Global就无需注册
+            //如果是负载均衡引起静态变量丢失可以写成这样,Global就无需注册。(PostValidation也一样)
             // ViewBag.validationBind = ValidationSugar.GetBindScript(PageKeys.INDEX_KEY, () => { Validates.Init()});
             return View();
         }
