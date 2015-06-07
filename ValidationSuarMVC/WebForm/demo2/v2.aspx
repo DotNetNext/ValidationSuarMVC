@@ -3,63 +3,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script src="jquery-validation-1.13.1/lib/jquery-1.9.1.js"></script>
-    <script src="jquery-validation-1.13.1/dist/jquery.validate.js"></script>
-    <script src="ValidationSugar.js" type="text/javascript"></script>
+    <script src="/Content/jquery-validation-1.13.1/lib/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="/Content/jquery-validation-1.13.1/dist/jquery.validate.js" type="text/javascript"></script>
+    <script src="/Content/validation.sugar.js" type="text/javascript"></script>
+    <script src="/Content/jquery-validation-1.13.1/lib/jquery.form.js" type="text/javascript"></script>
+    <link href="/Content/jquery-validation-1.13.1/validation.sugar.css" rel="stylesheet"
+        type="text/css" />
     <script type="text/javascript">
         $(function () {
-            var factory = new validateFactory($("form"));
+            var factory = new validateFactory($("form"), "<img src=\"/Content/jquery-validation-1.13.1/error.png\" />");
             factory.init();
 
-
             $("#btnSubmit").click(function () {
-
-                //factory.submit(); //直接提交表单
-
                 //异步方式
                 factory.ajaxSubmit(function () {
-                    $("form").submit();//可以用ajax
+                    $("form").ajaxSubmit({
+                        type: "post",
+                        url: "/home/postlogin",
+                        dataType: "json",
+                        success: function (msg) {
+                            alert(msg.Message)
+                        }
+                    })
                 });
             });
 
+
+
         });
+        function checkUserName() {
+            var userName = $("[name=userName]").val();
+            if (userName == "admin1" || userName == "admin2") {
+                return true;
+            }
+            return false;
+        }
     </script>
     <style>
-        .form_hint
+        td
         {
-            display: none;
-        }
-        #form1 .error
-        {
-            color: Red;
+            height: 30px;
+            padding:5px;
         }
     </style>
 </head>
 <body>
     <h3>
         基于jquery.validate的前后台双验证</h3>
-    <form method="post" action="PostV2.aspx" id="form1">
-    <p>
-        name:
-        <input type="text" name="name">
-    </p>
-    <p>
-        sex :<input type="radio" name="sex" value="0" />男
-        <input type="radio" name="sex" value="1" />女
-    </p>
-    <p>
-        email:
-        <input type="text" name="email" />
-    </p>
-    <p>
-        爱好:
-        <input type="checkbox" value="1" name="hobbies">游戏
-        <input type="checkbox" value="3" name="hobbies">下棋
-        <input type="checkbox" value="2" name="hobbies">打酱油
-    </p>
-    <button id="btnSubmit" type="submit">
-        提交</button>
-    <%=bindScript %>
+    <form method="post" class="form" id="form1"  action="/home/postlogin">
+    <table>
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                <input type="text" name="userName">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                password
+            </td>
+            <td>
+                <input type="password" name="password" />
+            </td>
+        </tr>
+    </table>
+    <button id="btnSubmit" type="button">
+        ajax提交</button> 
+         <%=ViewState["validationBind"]%>
     </form>
 </body>
 </html>

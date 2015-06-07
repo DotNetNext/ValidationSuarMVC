@@ -70,14 +70,6 @@
     <Compile Include="Models\Validates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationSugar.cs" />
-    <Compile Include="WebForm\demo1\V1.aspx.cs">
-      <DependentUpon>V1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForm\demo2\PostV2.aspx.cs">
-      <DependentUpon>PostV2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="WebForm\demo2\v2.aspx.cs">
       <DependentUpon>v2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -113,12 +105,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="WebForm\demo1\css\images\invalid.png" />
-    <Content Include="WebForm\demo1\css\images\red_asterisk.png" />
-    <Content Include="WebForm\demo1\css\images\valid.png" />
-    <Content Include="WebForm\demo1\css\index.html" />
-    <Content Include="WebForm\demo1\css\styles.css" />
-    <Content Include="WebForm\demo1\V1.aspx" />
     <Content Include="WebForm\demo2\jquery-validation-1.13.1\dist\additional-methods.js" />
     <Content Include="WebForm\demo2\jquery-validation-1.13.1\dist\additional-methods.min.js" />
     <Content Include="WebForm\demo2\jquery-validation-1.13.1\dist\jquery.validate.js" />
@@ -133,7 +119,6 @@
     <Content Include="WebForm\demo2\jquery-validation-1.13.1\lib\jquery.mockjax.js" />
     <Content Include="WebForm\demo2\jquery-validation-1.13.1\lib\jquery.simulate.js" />
     <Content Include="WebForm\demo2\jquery-validation-1.13.1\lib\require.js" />
-    <Content Include="WebForm\demo2\PostV2.aspx" />
     <Content Include="WebForm\demo2\v2.aspx" />
     <Content Include="WebForm\demo2\ValidationSugar.js" />
   </ItemGroup>
