@@ -100,6 +100,9 @@ var bindValidation{1}=function(name,params,i,validateSize){{
                         case OptionItemType.Fax:
                             itit.Pattern = @"^[+]{0,1}(\\d){1,3}[ ]?([-]?((\\d)|[ ]){1,12})+$";
                             break;
+                        case OptionItemType.Func:
+                            itit.Pattern = "myfun:" + itit.Func;
+                            break;
                         case OptionItemType.Regex:
                             itit.Pattern = itit.Pattern.TrimStart('^').TrimEnd('$');
                             itit.Pattern = string.Format("^{0}$", itit.Pattern);
@@ -150,7 +153,7 @@ var bindValidation{1}=function(name,params,i,validateSize){{
                 {
                     var errorList = value.Split(',').Where(itit =>
                     {
-                        var isNotMatch = it.TypeParams.Any(par => !Regex.IsMatch(itit, par.Pattern.Replace(@"\\", @"\")));
+                        var isNotMatch = it.TypeParams.Any(par => par.Type != ValidationSugar.OptionItemType.Func && !Regex.IsMatch(itit, par.Pattern.Replace(@"\\", @"\")));
                         return isNotMatch;
 
                     }).ToList();
@@ -158,14 +161,14 @@ var bindValidation{1}=function(name,params,i,validateSize){{
                 }
                 else
                 {
-                    return !it.TypeParams.Any(par => !Regex.IsMatch(value, par.Pattern.Replace(@"\\", @"\")));
+                    return !it.TypeParams.Any(par => par.Type != ValidationSugar.OptionItemType.Func&&!Regex.IsMatch(value, par.Pattern.Replace(@"\\", @"\")));
                 }
             }
                 ).ToList();
             isSuccess = (successItemList.Count == itemList.Count);
             if (!isSuccess)
             {
-                errorMessage = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(itemList);
+                errorMessage = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(itemList.Where(it=>!successItemList.Any(sit=>sit.FormFiledName==it.FormFiledName)));
             }
             return isSuccess;
         }
@@ -198,7 +201,11 @@ var bindValidation{1}=function(name,params,i,validateSize){{
             /// <summary>
             /// 没有合适的，请使用正则验证
             /// </summary>
-            Regex = 1000
+            Regex = 1000,
+            /// <summary>
+            /// 函数验证
+            /// </summary>
+            Func=1001
 
         }
         /// <summary>
@@ -247,6 +254,10 @@ var bindValidation{1}=function(name,params,i,validateSize){{
             /// 提醒
             /// </summary>
             public string Tip { get; set; }
+            /// <summary>
+            /// 函数
+            /// </summary>
+            public string Func { get; set; }
         }
     }
 
@@ -296,6 +307,22 @@ var bindValidation{1}=function(name,params,i,validateSize){{
             thisValue.ItemOption.TypeParams.Add(par);
             return thisValue;
         }
+        public static ValidationSugarOptionItemModel AddFunc(this ValidationSugarOptionItemModel thisValue, string func, string tip)
+        {
+            if (thisValue.ItemOption.TypeParams == null)
+            {
+                thisValue.ItemOption.TypeParams = new List<ValidationSugar.OptionItemTypeParams>();
+            }
+            ValidationSugar.OptionItemTypeParams par = new ValidationSugar.OptionItemTypeParams()
+            {
+                Func = func,
+                Tip = tip,
+                Type = ValidationSugar.OptionItemType.Func
+            };
+            thisValue.ItemOption.TypeParams.Add(par);
+            return thisValue;
+        }
+
 
         public static ValidationSugar.OptionItem ToOptionItem(this ValidationSugarOptionItemModel thisValue)
         {

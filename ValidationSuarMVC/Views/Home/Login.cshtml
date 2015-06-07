@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Login";
-    Layout =null;
+    Layout = null;
 }
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,9 +9,11 @@
     <script src="/Content/jquery-validation-1.13.1/dist/jquery.validate.js" type="text/javascript"></script>
     <script src="/Content/validation.sugar.js" type="text/javascript"></script>
     <script src="/Content/jquery-validation-1.13.1/lib/jquery.form.js" type="text/javascript"></script>
+    <link href="/Content/jquery-validation-1.13.1/validation.sugar.css" rel="stylesheet"
+        type="text/css" />
     <script type="text/javascript">
         $(function () {
-            var factory = new validateFactory($("form"));
+            var factory = new validateFactory($("form"), "<img src=\"/Content/jquery-validation-1.13.1/error.png\" />");
             factory.init();
 
             $("#btnSubmit").click(function () {
@@ -28,36 +30,50 @@
                 });
             });
 
+
+
         });
+        function checkUserName() {
+            var userName = $("[name=userName]").val();
+            if (userName == "admin1" || userName == "admin2") {
+                return true;
+            }
+            return false;
+        }
     </script>
     <style>
-        .form_hint
+        td
         {
-            display: none;
-        }
-        #form1 .error
-        {
-            color: Red;
+            height: 30px;
+            padding:5px;
         }
     </style>
 </head>
 <body>
     <h3>
         基于jquery.validate的前后台双验证</h3>
-    <form method="post"  id="form1">
-    <p>
-        name:
-        <input type="text" name="userName">
-    </p>
-    <p>
-        password:
-        <input type="password" name="password" />
-    </p>
-
+    <form method="post" class="form" id="form1"  action="/home/postlogin">
+    <table>
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                <input type="text" name="userName">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                password
+            </td>
+            <td>
+                <input type="password" name="password" />
+            </td>
+        </tr>
+    </table>
     <button id="btnSubmit" type="button">
-        提交</button>
-     @Html.Raw(ViewBag.validationBind)
+        ajax提交</button> <button type="submit">submit提交(禁掉浏览器JS进行测试)</button>
+    @Html.Raw(ViewBag.validationBind)
     </form>
 </body>
 </html>
-

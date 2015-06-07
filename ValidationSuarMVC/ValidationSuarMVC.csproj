@@ -84,6 +84,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\jquery-validation-1.13.1\error.png" />
     <Content Include="Content\jquery-validation-1.13.1\dist\additional-methods.js" />
     <Content Include="Content\jquery-validation-1.13.1\dist\additional-methods.min.js" />
     <Content Include="Content\jquery-validation-1.13.1\dist\jquery.validate.js" />
@@ -98,6 +99,7 @@
     <Content Include="Content\jquery-validation-1.13.1\lib\jquery.mockjax.js" />
     <Content Include="Content\jquery-validation-1.13.1\lib\jquery.simulate.js" />
     <Content Include="Content\jquery-validation-1.13.1\lib\require.js" />
+    <Content Include="Content\jquery-validation-1.13.1\validation.sugar.css" />
     <Content Include="Content\validation.sugar.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />

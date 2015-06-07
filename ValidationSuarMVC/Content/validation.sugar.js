@@ -1,15 +1,10 @@
 ﻿//基于validate验证
 //作者:sunkaixuan
 //时间:2015-6-5
-var validateFactory = function (form) {
+var validateFactory = function (form,errorImg) {
     this.init = function () {
         addMethod();
         bind();
-    }
-    this.submit = function () {
-        if (form.data("validateFactory")) {
-            form.data("validateFactory").form();
-        }
     }
     this.ajaxSubmit = function (rollback) {
         if (form.data("validateFactory")) {
@@ -27,13 +22,15 @@ var validateFactory = function (form) {
             for (var i = 0; i < count; i++) {
                 var methodName = GetMdthodName(th, i);
                 $.validator.addMethod(methodName, function (value, element, params) {
-                    if (i == count) {
-                        i = 0;
+
+                    var pattern = GetPattern(th, params);
+                    if (/myfun\:.*/.test(pattern)) {
+                        var isvalid = eval(pattern.split(':')[1] + "()");
+                        return this.optional(element) || isvalid;
+                    } else {
+                        return this.optional(element) || new RegExp(pattern).test(value);
                     }
-                    var pattern = GetPattern(th, i);
-                    ++i;
-                    return this.optional(element) || new RegExp(pattern).test(value);
-                }, GetTip(th, i));
+                }, errorImg + GetTip(th, i));
             }
         });
     }
@@ -47,7 +44,7 @@ var validateFactory = function (form) {
             rules[name] = {};
             for (var i = 0; i < count; i++) {
                 var methodName = GetMdthodName(th, i);
-                rules[name][methodName] = true;
+                rules[name][methodName] = i;
             }
             if (GetIsRequired(th)) {
                 rules[name].required = true;
@@ -57,7 +54,8 @@ var validateFactory = function (form) {
                 //                    var methodName = GetMdthodName(th, i);
                 //                    messages[name][methodName] = GetTip(th,i);
                 //                }
-                messages[name].required = "不能为空！";
+                messages[name].required =  errorImg+"不能为空！";
+
             }
 
 
